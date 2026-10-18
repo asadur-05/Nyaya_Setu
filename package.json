@@ -1,0 +1,21 @@
+{
+  "name": "nyayasetu-ai-root",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server run start",
+    "test": "npm --prefix server test",
+    "test:knowledge": "npm --prefix server run test:knowledge",
+    "kb:validate": "npm --prefix server run kb:validate --",
+    "kb:apply": "npm --prefix server run kb:apply --"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

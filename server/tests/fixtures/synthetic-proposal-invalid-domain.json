@@ -1,0 +1,35 @@
+{
+  "action": "add",
+  "entry": {
+    "id": "test-synthetic-bad-domain",
+    "title": "SYNTHETIC TEST FIXTURE — Bad Domain",
+    "topic": "Synthetic Court Summons",
+    "jurisdiction": "India",
+    "language": "en",
+    "content": "SYNTHETIC TEST FIXTURE — NOT REAL LAW. Passage with unapproved domain.",
+    "keywords": ["synthetic test"],
+    "sourceName": "Commercial Blog Source",
+    "sourceUrl": "https://randomlawblog.com/fake-circular",
+    "sourceType": "legislation",
+    "effectiveDate": "2026-01-01",
+    "lastVerified": "2026-10-18",
+    "version": 1,
+    "status": "active",
+    "supersededBy": null,
+    "volatile": false
+  },
+  "verification": {
+    "verifiedBy": "QA Test Engine",
+    "verifiedOn": "2026-10-18",
+    "note": "Testing domain allowlist rejection."
+  },
+  "testCases": [
+    {
+      "id": "tc-bad-domain",
+      "type": "retrieval",
+      "language": "en",
+      "question": "test bad domain query?",
+      "expectedSourceIds": ["test-synthetic-bad-domain"]
+    }
+  ]
+}

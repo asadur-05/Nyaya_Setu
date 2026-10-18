@@ -1,0 +1,19 @@
+[
+  {
+    "knowledgeBaseVersion": "1.0.0",
+    "date": "2026-10-18",
+    "action": "init",
+    "entryIds": [
+      "erss-112-emergency",
+      "nalsa-free-legal-aid",
+      "bnss-fir-registration",
+      "pwdva-domestic-violence-relief",
+      "posh-workplace-harassment-redressal",
+      "bns-stalking-harassment",
+      "whl-181-women-helpline",
+      "legal-aid-document-checklist"
+    ],
+    "summary": "Initial baseline knowledge base of verified Indian legal information and emergency services.",
+    "verifiedBy": "Legal-Tech Architecture Team"
+  }
+]

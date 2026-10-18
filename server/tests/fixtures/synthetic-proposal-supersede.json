@@ -1,0 +1,44 @@
+{
+  "action": "add",
+  "supersedesId": "test-synthetic-digital-notice",
+  "entry": {
+    "id": "test-synthetic-digital-notice-v2",
+    "title": "SYNTHETIC TEST FIXTURE — NOT REAL LAW — Superseding Digital Summons Rule",
+    "topic": "Synthetic Court Summons",
+    "jurisdiction": "India",
+    "language": "en",
+    "content": "SYNTHETIC TEST FIXTURE — NOT REAL LAW. Under Synthetic Rule 99B of the Virtual Court Rules 2026, which supersedes Rule 99, electronic summons sent via certified portal shall be deemed served within twenty-four hours of transmission.",
+    "keywords": [
+      "synthetic digital notice",
+      "synthetic court summons",
+      "rule 99b",
+      "twenty-four hours",
+      "सिंथेटिक समन"
+    ],
+    "sourceName": "Ministry of Law and Justice (Synthetic Test Section)",
+    "sourceUrl": "https://doj.gov.in/synthetic-test-summons-notice-v2",
+    "sourceType": "legislation",
+    "effectiveDate": "2026-06-01",
+    "lastVerified": "2026-10-18",
+    "version": 1,
+    "status": "active",
+    "supersededBy": null,
+    "volatile": false
+  },
+  "verification": {
+    "verifiedBy": "QA Test Suite Engine",
+    "verifiedOn": "2026-10-18",
+    "note": "SYNTHETIC TEST FIXTURE — NOT REAL LAW. Verified revised synthetic circular superseding rule 99."
+  },
+  "testCases": [
+    {
+      "id": "tc-synthetic-test-summons-v2",
+      "type": "retrieval",
+      "language": "en",
+      "question": "What is the new synthetic digital notice rule 99b for synthetic court summons?",
+      "expectedSourceIds": ["test-synthetic-digital-notice-v2"],
+      "expectedEvidenceLevel": "sufficient",
+      "description": "Verifies retrieval of superseding synthetic rule 99b."
+    }
+  ]
+}

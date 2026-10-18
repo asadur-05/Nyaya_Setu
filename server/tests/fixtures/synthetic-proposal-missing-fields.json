@@ -1,0 +1,10 @@
+{
+  "action": "add",
+  "entry": {
+    "id": "bad-entry-missing-fields",
+    "title": "Bad Entry"
+  },
+  "verification": {
+    "verifiedBy": "QA"
+  }
+}

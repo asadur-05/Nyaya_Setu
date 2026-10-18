@@ -1,0 +1,44 @@
+{
+  "action": "add",
+  "entry": {
+    "id": "test-synthetic-digital-notice",
+    "title": "SYNTHETIC TEST FIXTURE — NOT REAL LAW — Digital Summons Notification Rule",
+    "topic": "Synthetic Court Summons",
+    "jurisdiction": "India",
+    "language": "en",
+    "content": "SYNTHETIC TEST FIXTURE — NOT REAL LAW. Under Synthetic Rule 99 of the Virtual Court Rules 2026, electronic summons sent via certified portal shall be deemed served within forty-eight hours of transmission. The respondent may submit a verified response within fourteen days.",
+    "keywords": [
+      "synthetic digital notice",
+      "synthetic court summons",
+      "rule 99",
+      "forty-eight hours",
+      "सिंथेटिक समन",
+      "synthetic summons"
+    ],
+    "sourceName": "Ministry of Law and Justice (Synthetic Test Section)",
+    "sourceUrl": "https://doj.gov.in/synthetic-test-summons-notice",
+    "sourceType": "legislation",
+    "effectiveDate": "2026-01-01",
+    "lastVerified": "2026-10-18",
+    "version": 1,
+    "status": "active",
+    "supersededBy": null,
+    "volatile": false
+  },
+  "verification": {
+    "verifiedBy": "QA Test Suite Engine",
+    "verifiedOn": "2026-10-18",
+    "note": "SYNTHETIC TEST FIXTURE — NOT REAL LAW. Inspected official test circular for synthetic automated testing."
+  },
+  "testCases": [
+    {
+      "id": "tc-synthetic-test-summons",
+      "type": "retrieval",
+      "language": "en",
+      "question": "What is the synthetic digital notice rule 99 for synthetic court summons?",
+      "expectedSourceIds": ["test-synthetic-digital-notice"],
+      "expectedEvidenceLevel": "sufficient",
+      "description": "Verifies retrieval of synthetic rule 99."
+    }
+  ]
+}
