@@ -1,5 +1,5 @@
 import React from 'react';
-import { Scale, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 export function Footer({ t }) {
   return (
@@ -8,8 +8,8 @@ export function Footer({ t }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8 border-b border-slate-800">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400">
-                <Scale className="w-4 h-4" />
+              <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-red-600 flex-shrink-0">
+                <img src="/logo.jpg" alt="NyayaSetu_AI Logo" className="w-full h-full object-cover" />
               </div>
               <span className="font-extrabold text-base text-white">NyayaSetu_AI</span>
             </div>

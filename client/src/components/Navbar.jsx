@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Scale, Menu, X, ShieldAlert, BookOpen, HelpCircle, Lock, MessageSquare } from 'lucide-react';
+import { Menu, X, ShieldAlert, BookOpen, HelpCircle, Lock, MessageSquare } from 'lucide-react';
 import { LanguageToggle } from './LanguageToggle.jsx';
 
 export function Navbar({ lang, t, onToggleLang }) {
@@ -27,8 +27,12 @@ export function Navbar({ lang, t, onToggleLang }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo / Branding */}
           <a href="#" className="flex items-center gap-3 group focus:outline-hidden">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-sky-400 group-hover:bg-slate-800 transition-colors shadow-sm">
-              <Scale className="w-5 h-5 text-sky-400" />
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-red-600 shadow-sm group-hover:shadow-md transition-shadow flex-shrink-0">
+              <img
+                src="/logo.jpg"
+                alt="NyayaSetu_AI Logo"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <div className="flex items-center gap-2">

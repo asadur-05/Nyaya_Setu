@@ -52,6 +52,25 @@ export function isForeignJurisdiction(text = '') {
   return NON_INDIA_JURISDICTIONS.some(rx => rx.test(text));
 }
 
+const STOP_WORDS = new Set([
+  'and', 'the', 'for', 'under', 'from', 'with', 'over', 'into', 'that', 'this',
+  'what', 'where', 'when', 'which', 'who', 'how', 'why', 'are', 'was', 'were',
+  'can', 'could', 'should', 'would', 'will', 'any', 'all', 'some', 'one', 'two',
+  'its', 'their', 'our', 'your', 'about', 'also', 'per', 'act', 'code', 'order',
+  'orders', 'section', 'sections', 'take', 'make', 'give', 'next', 'help', 'india',
+  'court', 'case', 'dispute'
+]);
+
+function matchesKeyword(text, kw) {
+  if (!kw) return false;
+  // If keyword contains non-ASCII (e.g. Hindi Devanagari)
+  if (/[^\x00-\x7F]/.test(kw)) {
+    return text.includes(kw);
+  }
+  const rx = new RegExp(`\\b${escapeRegExp(kw)}\\b`, 'i');
+  return rx.test(text);
+}
+
 /**
  * Retrieves top matching entries from the active knowledge base.
  * @param {string} userMessage 
@@ -91,58 +110,63 @@ export function retrieveEntries(userMessage = '', history = [], activeEntries = 
     const entryTopicNorm = normalizeQuery(entry.topic);
     const entryContentNorm = normalizeQuery(entry.content);
 
-    // 1. Keyword matching
+    // 1. Keyword matching with proper boundary check
     for (const kw of entry.keywords || []) {
       const kwNorm = normalizeQuery(kw);
-      if (!kwNorm) continue;
+      if (!kwNorm || STOP_WORDS.has(kwNorm)) continue;
 
-      // Word boundary match or substring for Hindi/Devanagari
-      const regex = new RegExp(`(?:^|\\s)${escapeRegExp(kwNorm)}(?:$|\\s)`, 'i');
-      if (regex.test(combinedQuery) || combinedQuery.includes(kwNorm)) {
-        // Multi-word phrase keyword gets higher weight
+      if (matchesKeyword(combinedQuery, kwNorm)) {
         const isPhrase = kwNorm.includes(' ');
         score += isPhrase ? 4.5 : 2.5;
         matchedKeywords.add(kw);
       }
     }
 
-    // 2. Title & Topic matching
+    // 2. Title & Topic matching (strictly excluding stop words)
     for (const word of entryTitleNorm.split(' ')) {
-      if (word.length >= 3 && combinedQuery.includes(word)) {
+      if (word.length >= 4 && !STOP_WORDS.has(word) && matchesKeyword(combinedQuery, word)) {
         score += 1.5;
       }
     }
-    if (entryTopicNorm && combinedQuery.includes(entryTopicNorm)) {
+    if (entryTopicNorm && matchesKeyword(combinedQuery, entryTopicNorm)) {
       score += 3.0;
     }
 
-    // 3. Specific legal terms boosts
-    if (entry.id === 'bnss-fir-registration' && /\b(?:fir|zero\s+fir|efir|173|थाना|शिकायत)\b/i.test(combinedQuery)) {
-      score += 3.0;
+    // 3. Specific legal terms boosts & domain detection
+    if (entry.id === 'bnss-fir-registration' && /\b(?:fir|zero\s+fir|efir|173|थाना|शिकायत|complain|complaint|police\s+station)\b/i.test(combinedQuery)) {
+      score += 3.5;
+      matchedKeywords.add('fir-registration');
     }
-    if (entry.id === 'erss-112-emergency' && /\b(?:112|emergency|police|ambulance|आपातकालीन)\b/i.test(combinedQuery)) {
-      score += 3.0;
+    if (entry.id === 'erss-112-emergency' && /\b(?:112|emergency|police|ambulance|आपातकालीन|immediate\s+danger)\b/i.test(combinedQuery)) {
+      score += 3.5;
+      matchedKeywords.add('emergency-112');
     }
-    if (entry.id === 'nalsa-free-legal-aid' && /\b(?:nalsa|legal\s+aid|free\s+(?:lawyer|advocate)|15100|वकील|कानूनी\s+मदद)\b/i.test(combinedQuery)) {
-      score += 3.0;
+    if (entry.id === 'nalsa-free-legal-aid' && /\b(?:nalsa|dlsa|slsa|15100|legal\s+aid|free\s+lawyer|free\s+advocate|वकील|कानूनी\s+मदद)\b/i.test(combinedQuery)) {
+      score += 3.5;
+      matchedKeywords.add('free-legal-aid');
     }
-    if (entry.id === 'pwdva-domestic-violence-relief' && /\b(?:domestic\s+violence|protection\s+order|residence\s+order|घरेलू\s+हिंसा)\b/i.test(combinedQuery)) {
-      score += 3.0;
+    if (entry.id === 'pwdva-domestic-violence-relief' && /\b(?:domestic\s+violence|marital\s+abuse|husband\s+beats|husband\s+beating|husband\s+violence|protection\s+order|residence\s+order|घरेलू\s+हिंसा|मारपीट|ससुराल\s+प्रताड़ना)\b/i.test(combinedQuery)) {
+      score += 4.0;
+      matchedKeywords.add('domestic-violence');
     }
-    if (entry.id === 'posh-workplace-harassment-redressal' && /\b(?:posh|workplace|internal\s+committee|local\s+committee|यौन\s+उत्पीड़न|office)\b/i.test(combinedQuery)) {
-      score += 3.0;
+    if (entry.id === 'posh-workplace-harassment-redressal' && /\b(?:posh|internal\s+committee|local\s+committee|workplace\s+harassment|boss\s+harass|office\s+harass|यौन\s+उत्पीड़न)\b/i.test(combinedQuery)) {
+      score += 3.5;
+      matchedKeywords.add('workplace-harassment');
     }
-    if (entry.id === 'bns-stalking-harassment' && /\b(?:stalking|stalker|following|78|79|पीछा|छेड़छाड़)\b/i.test(combinedQuery)) {
-      score += 3.0;
+    if (entry.id === 'bns-stalking-harassment' && /\b(?:stalking|stalker|stalk|following|unwanted\s+messages?|sexual\s+messages?|inappropriate\s+comments?|cyber\s+stalking|online\s+harassment|report\s+this\s+harassment|78\s+bns|79\s+bns|पीछा|छेड़छाड़)\b/i.test(combinedQuery)) {
+      score += 5.5;
+      matchedKeywords.add('stalking-harassment');
     }
-    if (entry.id === 'whl-181-women-helpline' && /\b(?:181|helpline|महिला\s+हेल्पलाइन)\b/i.test(combinedQuery)) {
-      score += 3.0;
+    if (entry.id === 'whl-181-women-helpline' && /\b(?:181|women\s+helpline|महिला\s+हेल्पलाइन|one\s+stop\s+centre|sakhi\s+centre)\b/i.test(combinedQuery)) {
+      score += 3.5;
+      matchedKeywords.add('women-helpline');
     }
-    if (entry.id === 'legal-aid-document-checklist' && /\b(?:documents?|checklist|papers?|proof|दस्तावेज|कागजात|सबूत)\b/i.test(combinedQuery)) {
-      score += 3.0;
+    if (entry.id === 'legal-aid-document-checklist' && /\b(?:document\s+checklist|documents\s+needed|papers\s+needed|proof\s+needed|दस्तावेज|कागजात|सबूत)\b/i.test(combinedQuery)) {
+      score += 3.5;
+      matchedKeywords.add('document-checklist');
     }
 
-    if (score > 0 && matchedKeywords.size > 0) {
+    if (score >= 2.5 && matchedKeywords.size > 0) {
       scored.push({
         entry,
         score,

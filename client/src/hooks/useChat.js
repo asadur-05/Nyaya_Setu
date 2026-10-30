@@ -22,10 +22,10 @@ export function useChat(initialLanguage = 'en') {
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    // Build history for backend (last 4 turns)
+    // Build history for backend (last 4 turns, cap content to 900 chars to avoid payload overflow)
     const historyPayload = messages.slice(-4).map(m => ({
       role: m.role,
-      content: m.content
+      content: typeof m.content === 'string' ? m.content.slice(0, 900) : ''
     }));
 
     setMessages(prev => [...prev, userMessage]);

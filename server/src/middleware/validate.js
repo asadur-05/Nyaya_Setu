@@ -73,14 +73,18 @@ export function validateChatInput(req, res, next) {
           }
         });
       }
-      if (typeof turn.content !== 'string' || turn.content.length > 1000) {
+      if (typeof turn.content !== 'string') {
         return res.status(400).json({
           ok: false,
           error: {
             code: 'INVALID_INPUT',
-            message: `History turn #${i} content must be a string up to 1000 characters.`
+            message: `History turn #${i} content must be a string.`
           }
         });
+      }
+      // Auto-truncate history turns over 1000 chars gracefully so client follow-up turns never break
+      if (turn.content.length > 1000) {
+        turn.content = turn.content.slice(0, 1000);
       }
     }
   }
